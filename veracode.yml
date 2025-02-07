@@ -36,7 +36,7 @@ veracode_static_scan:
   issues:
     trigger: true
     commands:
-      - "Execute Pipeline"
+      - "Execute"
 
 veracode_sca_scan:
   push:
