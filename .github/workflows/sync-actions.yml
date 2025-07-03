@@ -1,0 +1,34 @@
+name: Sync Action into Veracode
+
+on:
+  workflow_dispatch:     # allow manual trigger from the Actions tab
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout veracode
+        uses: actions/checkout@v4
+
+      - name: Clone Action
+        run: |
+          git clone --depth=1 https://github.com/release-0-2-0/verademo-javascript-api.git /tmp/verademo-javascript-api
+
+      - name: Update folder with Action contents
+        run: |
+          # Remove old folder
+          rm -rf actions/veracode-tmp
+          mkdir -p actions/veracode-tmp
+
+          # Copy contents from repoA
+          cp -r /tmp/verademo-javascript-api/* actions/veracode-tmp
+
+      - name: Commit and push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+          git add path/to/target-folder
+          git commit -m "Sync repoA main branch $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "No changes to commit"
+          git push
