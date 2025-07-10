@@ -23,7 +23,7 @@ jobs:
           mkdir -p actions/veracode-tmp
 
           # Copy contents from repoA
-          cp -r /tmp/verademo-javascript-api/* actions/veracode-tmp1
+          cp -r /tmp/verademo-javascript-api/* actions/test
 
       - name: Commit and push changes
         run: |
