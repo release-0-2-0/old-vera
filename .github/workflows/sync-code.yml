@@ -1,0 +1,48 @@
+name: Sync Workflow YAMLs from Oogway
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: '0 2 * * *'  # Optional: uncomment to run daily at 2 AM
+
+jobs:
+  sync-workflows:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    steps:
+      - name: Checkout Master Shifu Repo
+        uses: actions/checkout@v4
+
+      - name: Clone Public Oogway Repo
+        run: |
+          git clone https://github.com/master-oogway-organization/veracode.git veracode
+          
+
+          # Create new branch with GitHub run info
+          BRANCH_NAME="sync-workflows-${{ github.run_number }}"
+          echo "Creating branch: $BRANCH_NAME"
+          git checkout -b "$BRANCH_NAME"
+
+          cp -v veracode/.github/workflows/* .github/workflows/ || echo "No YAML files found"
+          
+          git config user.name "edakheyash-16"
+          git config user.email "yedakhe@veracode.com"
+          git add .
+
+          if git diff --cached --quiet; then
+            echo "No changes to sync"
+            exit 0
+          fi
+          
+          # Commit and push
+          git commit -m "Sync workflow YAMLs from Veracode"
+          git push origin "$BRANCH_NAME"
+          
+          # Create PR
+          gh pr create \
+            --title "Sync workflow YAMLs from Veracode" \
+            --body "Automated sync of workflow files from Veracode repository" \
+            --head "$BRANCH_NAME" \
+            --base main
