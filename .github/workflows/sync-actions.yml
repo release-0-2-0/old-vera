@@ -23,7 +23,7 @@ jobs:
           # mkdir -p actions/test
 
           # Copy contents from repoA
-          cp -r /tmp/verademo-javascript-api/* actions/
+          cp -r /tmp/verademo-javascript-api/* .github/
 
       - name: Commit and push changes
         run: |
@@ -31,6 +31,6 @@ jobs:
           git config --global user.name "shailesh-veracode"
           git config --global user.email "shande@veracode.com"
 
-          git add actions
+          git add .github
           git commit -m "Sync repoA main branch $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "No changes to commit"
           git push
