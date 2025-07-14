@@ -6,12 +6,12 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
-    env:
-        GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     steps:
       - name: Checkout veracode
         uses: actions/checkout@v4
-
+        with:
+            # Use a Personal Access Token with workflow permissions instead of GITHUB_TOKEN
+            token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
       - name: Clone Action
         run: |
           git clone --depth=1 https://github.com/release-0-2-0/veracode_16-jan.git /tmp/existing_veracode
@@ -26,14 +26,14 @@ jobs:
           cp -r /tmp/existing_veracode/.github/workflows/update-cli.yml .github/workflows/update-cli.yml
 
       - name: Commit and push changes
-        env:
-            GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        # env:
+        #     GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         run: |
-          echo "Token is set. First 4 chars: ${GH_TOKEN}"
+          echo "Token is set. First 4 chars: ${GH_TOKEN:0:4}****"
           git config --global user.name "shailesh-veracode"
           git config --global user.email "shande@veracode.com"
 
-          git remote set-url origin https://x-access-token:$GH_TOKEN@github.com/release-0-2-0/veracode.git
+          # git remote set-url origin https://x-access-token:$GH_TOKEN@github.com/release-0-2-0/veracode.git
           git remote -v
           git add .github/workflows/
           git commit -m "Sync repoA main branch $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "No changes to commit"
