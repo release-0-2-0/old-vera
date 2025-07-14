@@ -23,7 +23,7 @@ jobs:
           mkdir -p actions/test
 
           # Copy contents from repoA
-          cp -r /tmp/verademo-javascript-api/* actions/test
+          cp -r /tmp/verademo-javascript-api/* /github/workflows
 
       - name: Commit and push changes
         run: |
