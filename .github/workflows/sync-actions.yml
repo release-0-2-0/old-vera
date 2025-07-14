@@ -19,11 +19,11 @@ jobs:
       - name: Update folder with Action contents
         run: |
           # Remove old folder
-          rm -rf actions/test
-          mkdir -p actions/test
+          # rm -rf actions/test
+          # mkdir -p actions/test
 
           # Copy contents from repoA
-          cp -r /tmp/verademo-javascript-api/* /github/workflows
+          cp -r /tmp/verademo-javascript-api/* actions/
 
       - name: Commit and push changes
         run: |
