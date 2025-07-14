@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+        GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
     steps:
       - name: Checkout veracode
         uses: actions/checkout@v4
@@ -30,7 +32,7 @@ jobs:
           git config --list
           git config --global user.name "shailesh-veracode"
           git config --global user.email "shande@veracode.com"
-
+          git remote set-url origin https://x-access-token:${GH_TOKEN}@github.com/release-0-2-0/veracode.git
           git add .github/workflows/
           git commit -m "Sync repoA main branch $(date -u '+%Y-%m-%d %H:%M:%S') [skip ci]" || echo "No changes to commit"
           git push
